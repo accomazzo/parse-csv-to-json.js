@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+
+        <input type="file" multiple id="input">
+    <script src="PapaParse/papaparse.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
+    
+    <script  type="text/javascript">
+        
+        
+    var resultsArray = [];
+
+    
+    var pullfiles = function() {
+
+
+        var fileInput = document.querySelector("#input");
+        // files is a FileList object (similar to NodeList)
+        var files = fileInput.files;
+        // cache files.length 
+        var fl=files.length;
+        var i=0;
+
+
+
+        function finishedResults(randoparameter) {
+                    resultsArray.push(randoparameter);
+                    console.log(resultsArray);
+                }
+
+
+        while ( i < fl) {
+            // localize file var in the loop
+            var file = files[i];
+
+
+            function cbContainer(fileParam, callBack ) {
+                Papa.parse(file, {
+                                    delimiter: "",	// auto-detect
+                                    newline: "",	// auto-detect
+                                    header: true,
+                                    dynamicTyping: false,
+                                    preview: 0,
+                                    encoding: "",
+                                    worker: false,
+                                    comments: false,
+                                    step: undefined,
+                                    complete: function(results) {
+                                                callBack(results.data);
+                                                },
+                                    error: undefined,
+                                    download: false,
+                                    skipEmptyLines: false,
+                                    chunk: undefined,
+                                    fastMode: undefined
+                                });
+            };
+            cbContainer(file, finishedResults);
+
+
+            i++;
+
+            }
+
+    };
+
+    //invoke above function
+    document.querySelector("#input").onchange=pullfiles;  
+    
+    
+    </script>
+    
+    </body>
+
+</html>
